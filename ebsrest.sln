@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2018
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ebsrest", "ebsrest\ebsrest.csproj", "{642DB976-35B3-46C0-9C3F-B45A2689FF95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ebsrest.Tests", "ebsrest.Tests\ebsrest.Tests.csproj", "{2A0683C1-309A-46C7-A25C-125DE5F378A0}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BD6FC7F9-9CC6-47F0-84F7-70C30121857E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{642DB976-35B3-46C0-9C3F-B45A2689FF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642DB976-35B3-46C0-9C3F-B45A2689FF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642DB976-35B3-46C0-9C3F-B45A2689FF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642DB976-35B3-46C0-9C3F-B45A2689FF95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0683C1-309A-46C7-A25C-125DE5F378A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0683C1-309A-46C7-A25C-125DE5F378A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0683C1-309A-46C7-A25C-125DE5F378A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0683C1-309A-46C7-A25C-125DE5F378A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6FC7F9-9CC6-47F0-84F7-70C30121857E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6FC7F9-9CC6-47F0-84F7-70C30121857E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6FC7F9-9CC6-47F0-84F7-70C30121857E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6FC7F9-9CC6-47F0-84F7-70C30121857E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42ABE051-4863-4547-8C99-623BC4CAD7CA}
+	EndGlobalSection
+EndGlobal

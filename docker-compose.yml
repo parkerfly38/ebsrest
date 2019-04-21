@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  ebsrest:
+    image: ${DOCKER_REGISTRY}ebsrest
+    build:
+      context: .\ebsrest
+      dockerfile: Dockerfile
