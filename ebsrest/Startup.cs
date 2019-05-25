@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Microsoft.Owin;
 using Owin;
@@ -13,6 +14,7 @@ namespace ebsrest
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            ConnectionFactory.ConnectionStrings.Add("DefaultConnection", ConfigurationManager.ConnectionStrings[0].ConnectionString);
         }
     }
 }
