@@ -10,5 +10,9 @@ namespace ebsrest.Models
         public int SOKey { get; set; }
 
         public string TranID { get; set; }
+
+        public string Status { get; set; }
+
+        public List<OrderError> Errors { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace ebsrest
 
         public static DbConnection GetOpenConnection(string connectionString)
         {
-            return new SqlConnection(connectionString);
+            return new SqlConnection(ConnectionStrings[connectionString]);
         }
         
     }

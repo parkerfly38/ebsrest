@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.3.1.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.1.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -36,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\ebsrest.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +52,9 @@
       <HintPath>..\packages\Dapper.1.60.6\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -112,6 +116,9 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -208,6 +215,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
@@ -239,22 +247,88 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="ConnectionFactory.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\AutoShipController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\SOController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CheckSOLogRequest.cs" />
+    <Compile Include="Models\CreateSOFromBlanketRequest.cs" />
+    <Compile Include="Models\CreateSOFromQuoteRequest.cs" />
+    <Compile Include="Models\CreateSOFromQuoteOrBlanketResponse.cs" />
+    <Compile Include="Models\GetInvoicesForSOResponse.cs" />
+    <Compile Include="Models\GetOrderDatesRequest.cs" />
+    <Compile Include="Models\GetOrderDatesResponse.cs" />
+    <Compile Include="Models\GetOrderHistoryRequest.cs" />
+    <Compile Include="Models\GetOrderHistoryResponse.cs" />
+    <Compile Include="Models\GetPortalCustomAttribRequest.cs" />
+    <Compile Include="Models\GetRecurBlnktOrdersRequest.cs" />
+    <Compile Include="Models\GetRecurBlnktOrdersResponse.cs" />
+    <Compile Include="Models\GetSalesSourceIDsResponse.cs" />
+    <Compile Include="Models\GetShipmentForRMARequest.cs" />
+    <Compile Include="Models\GetShipmentForRMAResponse.cs" />
+    <Compile Include="Models\GetShipmentSerialNbrsRequest.cs" />
+    <Compile Include="Models\GetShipmentSerialNbrsResponse.cs" />
+    <Compile Include="Models\GetShipmentsInvoicesRequest.cs" />
+    <Compile Include="Models\GetShipmentsInvoicesResponse.cs" />
+    <Compile Include="Models\GetSOLinesWithDetailResponse.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\InsertShipDistRequest.cs" />
+    <Compile Include="Models\InsertShipLineRequest.cs" />
+    <Compile Include="Models\InsertShipRequest.cs" />
+    <Compile Include="Models\InsertShipResponse.cs" />
+    <Compile Include="Models\InsertShipTransBatchRequest.cs" />
+    <Compile Include="Models\InsertShipTransBatchResponse.cs" />
+    <Compile Include="Models\PortalCustomAttributes.cs" />
+    <Compile Include="Models\RMADetailsRequest.cs" />
+    <Compile Include="Models\RMADetailsResponse.cs" />
+    <Compile Include="Models\RMAErrors.cs" />
+    <Compile Include="Models\SalesAnalysisRequest.cs" />
+    <Compile Include="Models\SalesAnalysisResponse.cs" />
+    <Compile Include="Models\SaveRMARequest.cs" />
+    <Compile Include="Models\SaveRMAResponse.cs" />
+    <Compile Include="Models\SaveSalesOrderUDFRequest.cs" />
+    <Compile Include="Models\SaveSOBlanketRequest.cs" />
+    <Compile Include="Models\SaveSOBlanketWrkRequest.cs" />
+    <Compile Include="Models\SaveSOLineUDFRequest.cs" />
+    <Compile Include="Models\SaveSOWebHdrStatusRequest.cs" />
+    <Compile Include="Models\SearchRMARequest.cs" />
+    <Compile Include="Models\SearchRMAResponse.cs" />
+    <Compile Include="Models\ShipmentScheduleRequest.cs" />
+    <Compile Include="Models\ShipmentScheduleResponse.cs" />
+    <Compile Include="Models\SOAttr.cs" />
+    <Compile Include="Models\SORequest.cs" />
+    <Compile Include="Models\GetSOLinesResponse.cs" />
+    <Compile Include="Models\GetSOOptionsRequest.cs" />
+    <Compile Include="Models\GetSOOptionsResponse.cs" />
+    <Compile Include="Models\OrderDetailsRequest.cs" />
+    <Compile Include="Models\OrderDetailsResponse.cs" />
+    <Compile Include="Models\OrderError.cs" />
     <Compile Include="Models\OrderLineRequest.cs" />
     <Compile Include="Models\OrderRequest.cs" />
     <Compile Include="Models\OrderResponse.cs" />
+    <Compile Include="Models\SearchOrderRequest.cs" />
+    <Compile Include="Models\SearchOrderResponse.cs" />
+    <Compile Include="Models\SearchShipmentsRequest.cs" />
+    <Compile Include="Models\SearchShipmentsResponse.cs" />
+    <Compile Include="Models\SerialNumberLookupRequest.cs" />
+    <Compile Include="Models\SerialNumberLookupResponse.cs" />
+    <Compile Include="Models\ShipmentDetailsRequest.cs" />
+    <Compile Include="Models\ShipmentDetailsResponse.cs" />
+    <Compile Include="Models\ShoppingCartResponse.cs" />
+    <Compile Include="Models\SOAddr.cs" />
+    <Compile Include="Models\SOHeaderRequest.cs" />
+    <Compile Include="Models\SOHeader.cs" />
+    <Compile Include="Models\SOBlanket.cs" />
+    <Compile Include="Models\SOOrders.cs" />
+    <Compile Include="Models\SOLine.cs" />
+    <Compile Include="Models\SOSearchRequest.cs" />
+    <Compile Include="Models\SOSearchResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
-    <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="SqlHandler.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -267,8 +341,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
@@ -295,17 +367,6 @@
     <None Include=".dockerignore">
       <DependentUpon>Dockerfile</DependentUpon>
     </None>
-    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.3.1.js" />
-    <Content Include="Scripts\jquery-3.3.1.min.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.js" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -315,14 +376,10 @@
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Content\Site.css" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Results\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -350,8 +407,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
-    <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -385,8 +440,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.1.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.1.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

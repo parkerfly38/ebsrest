@@ -14,7 +14,7 @@ namespace ebsrest
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            ConnectionFactory.ConnectionStrings.Add("DefaultConnection", ConfigurationManager.ConnectionStrings[0].ConnectionString);
+            ConnectionFactory.ConnectionStrings.Add("DefaultConnection", ConfigurationManager.ConnectionStrings[1].ConnectionString);
         }
     }
 }

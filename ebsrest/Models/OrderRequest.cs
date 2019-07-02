@@ -115,6 +115,8 @@ namespace ebsrest.Models
 
         public string BillToAddrLine5 { get; set; }
 
+        public string BillToName { get; set; }
+
         public string BillToCity { get; set; }
 
         public string BillToCountryID { get; set; }
@@ -129,7 +131,7 @@ namespace ebsrest.Models
 
         public int STaxSchdKey { get; set; }
 
-        public int CrHold { get; set; }
+        public int? CrHold { get; set; }
 
         public string CRMOpportunityID { get; set; }
 
@@ -140,6 +142,10 @@ namespace ebsrest.Models
         public int FOBKey { get; set; }
 
         public string ShipToAddrID { get; set; }
+
+        public string LoginName { get; set; }
+
+        public int? DfltDelMethod { get; set; }
 
         public List<OrderLineRequest> lines { get; set; }
     }

@@ -28,6 +28,8 @@ namespace ebsrest.Models
 
         public DateTime PromiseDate { get; set; }
 
+        public DateTime? ExpirationDate { get; set; }
+
         [Required]
         public int POLineNo { get; set; }
 
@@ -56,6 +58,8 @@ namespace ebsrest.Models
         public int AcctRefKey { get; set; }
 
         public int WhseKey { get; set; }
+
+        public decimal TaxAmt { get; set; }
 
         public decimal FreightAmt { get; set; }
 
