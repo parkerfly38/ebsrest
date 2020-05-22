@@ -13,9 +13,11 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
+using EBSBusinessObjects.Models;
 
 namespace ebsrest.Controllers
 {
+    [Authorize]
     public class SOController : ApiController
     {
         SqlHandler sqlHandler = new SqlHandler();
@@ -2086,6 +2088,11 @@ namespace ebsrest.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Save or add SO Web Line User Defined Field Values
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("SaveSOLineUDF")]
         [SwaggerResponse(HttpStatusCode.OK)]
@@ -2116,6 +2123,11 @@ namespace ebsrest.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Retrieve EBS Shopping Cart Object
+        /// </summary>
+        /// <param name="cartRequest"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("GetShoppingCart")]
         [ResponseType(typeof(ShoppingCartResponse))]
@@ -2123,7 +2135,7 @@ namespace ebsrest.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             DynamicParameters parameters = new DynamicParameters();
             DynamicParameters blanketParams = new DynamicParameters();
@@ -2181,6 +2193,79 @@ namespace ebsrest.Controllers
 
             return Ok(shoppingCartResponse);
         }
+
+        /// <summary>
+        /// Retrieves Sales Person for a Sales Order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("GetSpersForSalesOrder")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        public IHttpActionResult GetSpersForSalesOrder(GetSpersForSalesOrderRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            List<GetSpersForSalesOrderResponse> response = new List<GetSpersForSalesOrderResponse>();
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@CompID", request.CompanyID);
+            parameters.Add("@SperKey", request.SperKey);
+            parameters.Add("@SperID", request.SperID);
+            parameters.Add("@SperKeyIn", request.SperKeyIn);
+            try
+            {
+                response = sqlHandler.SQLWithRetrieveList<GetSpersForSalesOrderResponse>("spsoGetSpersForSalesOrder_RKL", System.Data.CommandType.StoredProcedure, parameters);
+            }
+            catch (Exception exception)
+            {
+                Common.LogError(request.LoginName, exception.Message, exception.StackTrace, "SOController.GetSpersForSalesOrder", "E");
+                return BadRequest(exception.Message);
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Calculate Cart Sales Tax using 500 Sales Tax tables
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("CalcCartSalesTax")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        public IHttpActionResult CalcCartSalesTax(CalcCartSalesTaxRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@SOKeyTemp", request.SOKeyTemp);
+            parameters.Add("@Result", null, DbType.String, ParameterDirection.Output, 10);
+            parameters.Add("@ResultDetail", null, DbType.String, ParameterDirection.Output, 100);
+
+            string[] response = { "", "" };
+
+            try
+            {
+                using (DbConnection connection = ConnectionFactory.GetOpenConnection("DefaultConnection"))
+                {
+                    connection.Execute("spsoCalcCartSalesTax_RKL", parameters, commandType: CommandType.StoredProcedure);
+                    response[0] = "Result: " + parameters.Get<string>("@Result");
+                    response[1] = "Result Detail: " + parameters.Get<string>("@ResultDetail");
+                }
+            }
+            catch (Exception exception)
+            {
+                Common.LogError(request.LoginName, exception.Message, exception.StackTrace, "SOController.CalcCartSalesTax", "E");
+                return BadRequest(exception.Message);
+            }
+            return Ok(response);
+        }
+
 
         #region Private Functions
 

@@ -6,11 +6,22 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using EBSBusinessObjects.Models;
 
 namespace ebsrest
 {
+    /// <summary>
+    /// Library of Common Functions
+    /// </summary>
     public static class Common
     {
+        /// <summary>
+        /// Returns custom portal attributres
+        /// </summary>
+        /// <param name="compID"></param>
+        /// <param name="attribName"></param>
+        /// <param name="loginName"></param>
+        /// <returns></returns>
         public static List<PortalCustomAttributes> GetPortalCustomAttributes(string compID, string attribName, string loginName)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -34,6 +45,12 @@ namespace ebsrest
             return attributes;
         }
 
+        /// <summary>
+        /// Returns ship method id for company/customer combination
+        /// </summary>
+        /// <param name="compId"></param>
+        /// <param name="CustID"></param>
+        /// <returns></returns>
         public static string GetShipMethID(string compId, string CustID)
         {
             string ShipMethID = string.Empty;
@@ -49,6 +66,22 @@ namespace ebsrest
             return ShipMethID;
         }
 
+        /// <summary>
+        /// Get ship method by address, company, and customer
+        /// </summary>
+        /// <param name="compId"></param>
+        /// <param name="custID"></param>
+        /// <param name="Addr1"></param>
+        /// <param name="Addr2"></param>
+        /// <param name="Addr3"></param>
+        /// <param name="Addr4"></param>
+        /// <param name="Addr5"></param>
+        /// <param name="Name"></param>
+        /// <param name="City"></param>
+        /// <param name="Country"></param>
+        /// <param name="State"></param>
+        /// <param name="Postal"></param>
+        /// <returns></returns>
         public static string GetShipMethID(string compId, string custID, string Addr1, string Addr2, string Addr3, string Addr4, string Addr5, string Name, string City, string Country, string State, string Postal)
         {
             string ShipMethID = string.Empty;
@@ -74,6 +107,12 @@ namespace ebsrest
             return ShipMethID;
         }
 
+        /// <summary>
+        /// Gets an ItemKey by ItemID and Company ID
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <param name="compId"></param>
+        /// <returns></returns>
         public static int GetItemKey(string itemId, string compId)
         {
             int ItemKey = 0;
@@ -88,6 +127,13 @@ namespace ebsrest
             return ItemKey;
         }
 
+        /// <summary>
+        /// Gets Vendor Address Key by company, vendor, and addr id
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="vendorId"></param>
+        /// <param name="vendorAddrId"></param>
+        /// <returns></returns>
         public static int GetVendorAddressKey(string companyId, string vendorId, string vendorAddrId)
         {
             int VendAddrKey = 0;
@@ -105,6 +151,12 @@ namespace ebsrest
             return VendAddrKey;
         }
 
+        /// <summary>
+        /// Get Vendor Key by Vendor ID
+        /// </summary>
+        /// <param name="companyId"></param>
+        /// <param name="vendorId"></param>
+        /// <returns></returns>
         public static int GetVendorKey(string companyId, string vendorId)
         {
             int VendKey = 0;
@@ -119,6 +171,12 @@ namespace ebsrest
             return VendKey;
         }
 
+        /// <summary>
+        /// Gets an item description by item ID
+        /// </summary>
+        /// <param name="companyID"></param>
+        /// <param name="itemID"></param>
+        /// <returns></returns>
         public static string GetItemDesc(string companyID, string itemID)
         {
             string returnString = string.Empty;
@@ -134,6 +192,14 @@ namespace ebsrest
             return returnString;
         }
 
+        /// <summary>
+        /// Primary error logging function
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="shortMessage"></param>
+        /// <param name="longMessage"></param>
+        /// <param name="webPage"></param>
+        /// <param name="IWE"></param>
         public static void LogError(string loginName, string shortMessage, string longMessage, string webPage, string IWE)
         {
             if (!longMessage.Contains("ThreadAbortException"))
@@ -157,6 +223,12 @@ namespace ebsrest
             }
         }
 
+        /// <summary>
+        /// Validates Customer ID
+        /// </summary>
+        /// <param name="custID"></param>
+        /// <param name="companyID"></param>
+        /// <returns></returns>
         public static bool IsValidCustID(string custID, string companyID)
         {
             SqlHandler sqlHandler = new SqlHandler();
@@ -178,6 +250,12 @@ namespace ebsrest
             return isValid;
         }
 
+        /// <summary>
+        /// Gets a Pmt Terms Key by Pmt Terms ID
+        /// </summary>
+        /// <param name="pmtTermsID"></param>
+        /// <param name="companyID"></param>
+        /// <returns></returns>
         public static int GetPmtTermsKey(string pmtTermsID, string companyID)
         {
             SqlHandler sqlHandler = new SqlHandler();
@@ -198,7 +276,10 @@ namespace ebsrest
             return pmtTermsKey;
         }
 
-
+        /// <summary>
+        /// Create a SessionKey
+        /// </summary>
+        /// <returns></returns>
         public static int GetSessionKey()
         {
             int sessionKey = 0;
@@ -220,5 +301,28 @@ namespace ebsrest
             }
             return sessionKey;
         }
+
+        /// <summary>
+        /// Primary Item Pricing routine
+        /// </summary>
+        /// <param name="CompID"></param>
+        /// <param name="CustID"></param>
+        /// <param name="ItemID"></param>
+        /// <param name="AddrKey"></param>
+        /// <param name="UOMKey"></param>
+        /// <param name="Qty"></param>
+        /// <param name="LoginName"></param>
+        /// <param name="PriceInquiry"></param>
+        /// <param name="WhseKey"></param>
+        /// <returns></returns>
+        public static ItemPrice GetItemPrice(string CompID, string CustID, string ItemID, int? AddrKey, int? UOMKey, decimal? Qty, string LoginName, int PriceInquiry, int? WhseKey)
+        {
+            var itemPrice = new ItemPrice();
+
+
+
+            return itemPrice;
+        }
+
     }
 }

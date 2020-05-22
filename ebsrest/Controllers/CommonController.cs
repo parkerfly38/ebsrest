@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using EBSBusinessObjects.Models;
 
 namespace ebsrest.Controllers
 {

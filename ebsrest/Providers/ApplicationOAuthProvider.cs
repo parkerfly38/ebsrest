@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using ebsrest.Models;
+using Dapper;
 
 namespace ebsrest.Providers
 {
@@ -31,23 +32,35 @@ namespace ebsrest.Providers
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-            if (user == null)
+            SqlHandler sqlHandler = new SqlHandler();
+            rklEncryptDecrypt.TripleDES tripleDES = new rklEncryptDecrypt.TripleDES();
+            //ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("@LoginName", context.UserName);
+            parameters.Add("@Password", context.Password);
+            parameters.Add("@EncPassword", tripleDES.Encrypt(context.Password));
+            UserData userData = sqlHandler.SQLWithRetrieveSingle<UserData>("SPCIVALIDATEBUSINESSSUITEUSER_RKL", System.Data.CommandType.StoredProcedure, parameters);
+            
+            if (userData == null || !userData.Valid)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-                CookieAuthenticationDefaults.AuthenticationType);
+            //ApplicationUser user = new ApplicationUser() { UserName = context.UserName, Id = context.UserName };
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            context.Validated(ticket);
-            context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            //ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
+            //   OAuthDefaults.AuthenticationType);
+            //ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
+            //    CookieAuthenticationDefaults.AuthenticationType);
+
+            //AuthenticationProperties properties = CreateProperties(user.UserName);
+            //AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            identity.AddClaim(new Claim("sub", context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            context.Validated(identity);
+            context.Request.Context.Authentication.SignIn(identity);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
